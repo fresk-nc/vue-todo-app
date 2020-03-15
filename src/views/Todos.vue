@@ -21,6 +21,8 @@
 </template>
 
 <script>
+    import { mapMutations, mapActions } from 'vuex';
+
     import TodoList from '../components/TodoList';
     import AddTodo from '../components/AddTodo';
     import Loader from '../components/Loader';
@@ -32,41 +34,28 @@
             AddTodo,
             Loader
         },
-        data: () => {
-            return {
-                todos: [],
-                loading: true,
-                filter: 'all'
-            }
-        },
         computed: {
-            filteredTodos() {
-                if (this.filter === 'completed') {
-                    return this.todos.filter(t => t.completed);
+            filter: {
+                get() {
+                    return this.$store.state.filter;
+                },
+                set(value) {
+                    this.updateFilter(value);
                 }
-
-                if (this.filter === 'not-completed') {
-                    return this.todos.filter(t => !t.completed);
-                }
-
-                return this.todos;
+            },
+            loading() {
+                return this.$store.state.loading;
+            },
+            filteredTodos () {
+                return this.$store.getters.filteredTodos(this.filter);
             }
         },
         mounted() {
-            fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
-                .then(response => response.json())
-                .then(json => {
-                    this.todos = json;
-                    this.loading = false;
-                })
+            this.fetchTodos();
         },
         methods: {
-            removeTodo(id) {
-                this.todos = this.todos.filter(t => t.id !== id);
-            },
-            addTodo(todo) {
-                this.todos.push(todo);
-            }
+            ...mapMutations([ 'removeTodo', 'addTodo', 'updateFilter', 'updateFilter' ]),
+            ...mapActions([ 'fetchTodos' ])
         }
     }
 </script>

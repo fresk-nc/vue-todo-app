@@ -23,6 +23,8 @@
                     };
 
                     this.$emit('add-todo', newTodo);
+
+                    this.title = '';
                 }
             }
         }

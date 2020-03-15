@@ -10,10 +10,11 @@
     <hr>
     <Loader v-if="loading" />
     <TodoList
-      v-else
+      v-else-if="filteredTodos.length"
       v-bind:todos="filteredTodos"
       @remove-todo="removeTodo"
     />
+    <p v-else>No todos!</p>
   </div>
 </template>
 

@@ -8,7 +8,9 @@
       <option value="not-completed">Not completed</option>
     </select>
     <hr>
+    <Loader v-if="loading" />
     <TodoList
+      v-else
       v-bind:todos="filteredTodos"
       @remove-todo="removeTodo"
     />
@@ -18,16 +20,19 @@
 <script>
 import TodoList from './components/TodoList';
 import AddTodo from './components/AddTodo';
+import Loader from './components/Loader';
 
 export default {
   name: 'App',
   components: {
     TodoList,
-    AddTodo
+    AddTodo,
+    Loader
   },
   data: () => {
     return {
       todos: [],
+      loading: true,
       filter: 'all'
     }
   },
@@ -47,7 +52,10 @@ export default {
   mounted() {
     fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
       .then(response => response.json())
-      .then(json => this.todos = json)
+      .then(json => {
+        this.todos = json;
+        this.loading = false;
+      })
   },
   methods: {
     removeTodo(id) {

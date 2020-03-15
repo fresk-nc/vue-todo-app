@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import todoApi from '../api/todo';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -26,10 +28,7 @@ export default new Vuex.Store({
     },
     actions: {
         async fetchTodos({ commit }) {
-            const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=3');
-            const json = await response.json();
-
-            commit('saveTodos', json);
+            commit('saveTodos', await todoApi.fetchTodos());
         }
     },
     getters: {

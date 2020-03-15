@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="onSubmit">
-        <input type="text" v-model="title">
+        <input type="text" v-model.trim="title">
         <button type="submit">Create</button>
     </form>
 </template>
@@ -15,10 +15,10 @@
         },
         methods: {
             onSubmit() {
-                if (this.title.trim()) {
+                if (this.title) {
                     const newTodo = {
                         id: Date.now(),
-                        title: this.title.trim(),
+                        title: this.title,
                         completed: false
                     };
 

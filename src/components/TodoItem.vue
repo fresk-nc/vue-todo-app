@@ -8,7 +8,7 @@
             />
             <strong>{{ index + 1 }}</strong>
         </span>
-        {{ todo.title }}
+        {{ todo.title | toUpperCase }}
         <button
             class="rm"
             @click="$emit('remove-todo', todo.id)"
@@ -29,6 +29,11 @@
             index: {
                 type: Number,
                 required: true
+            }
+        },
+        filters: {
+            toUpperCase(value) {
+                return value.toUpperCase();
             }
         }
     }
